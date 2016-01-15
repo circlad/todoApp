@@ -24,7 +24,7 @@ app.get('/todos', function (req, res) {
 
 app.get('/todos/:id', function (req, res) {
 	var todoId = parseInt(req.params.id, 10);
-var matchedTodo = _.findWhere(todos, {id: todoId})
+	var matchedTodo = _.findWhere(todos, {id: todoId})
 
 	if (matchedTodo) {
 		res.json(matchedTodo);
@@ -38,7 +38,7 @@ var matchedTodo = _.findWhere(todos, {id: todoId})
 app.post('/todos', function (req, res) {
 
 	// Use _pick to only pick description and completed
-	
+
 	var body = _.pick(req.body, 'description', 'completed');
 
 
@@ -60,6 +60,20 @@ app.post('/todos', function (req, res) {
 	console.log('description: ' + body.description);
 
 	res.json(body);
+})
+
+// DELETE /todos/:id
+
+app.delete('/todos/:id', function (req, res) {
+	var todoId = parseInt(req.params.id, 10);
+	var matchedTodo = _.findWhere(todos, {id: todoId});
+
+	if (matchedTodo) {
+		todos = _.without(todos, matchedTodo);
+		res.json(matchedTodo);
+	} else {
+		res.status(400).json({"error": " no todo found with that id"});
+	}
 })
 
 app.listen(PORT, function () {
