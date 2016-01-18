@@ -7,7 +7,7 @@ var env = process.env.NODE_ENV || 'development';
 var sequelize;
 
 if (env === 'production') {
-	sequelize = new Sequelize(process.env.DTABASE_URL, {
+	sequelize = new Sequelize(process.env.DATABASE_URL, {
 		dialect: 'postgres'
 	});
 } else {
@@ -16,8 +16,6 @@ if (env === 'production') {
 		'storage': __dirname + '/data/dev-todo-api.sqlite'
 	});
 }
-
-
 
 var db = {};
 
