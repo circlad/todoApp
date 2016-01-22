@@ -12,6 +12,8 @@ var todoNextId = 1;
 
 app.use(bodyParser.json());
 
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', function(req, res) {
 	res.send('Todo API Root');
 })
