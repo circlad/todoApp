@@ -7,8 +7,13 @@ $(document).ready(function() {
 		event.preventDefault();
 
 		var $email = $("#loginBox").find('input[name=email]')
-
 		var $password = $("#loginBox").find('input[name=password]')
+
+		var body = {
+			email: $email.val(),
+			password: $password.val()
+		}
+
 
 		// Check Email Validity
 
@@ -27,14 +32,17 @@ $(document).ready(function() {
 
 		if (errorMessage == "") {
 
-			alert("Congrats! You're now registered!")
+			// POST /users - Register a new user in the database
 
-			$.get('/users', function() {
-				$("body")
-					.append("email: "+ $email.val())
-					.append("password: "+ $password.val());
-			}, "json");
-
+			$.ajax({
+				type: "POST",
+				url: '/users',
+				data: JSON.stringify(body),
+				contentType: 'application/json',
+				success: function(data) {
+					alert("Congrats! You're now registered!")					
+				}
+			});
 
 
 		} else {
