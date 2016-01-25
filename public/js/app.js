@@ -36,31 +36,34 @@ $(document).ready(function() {
 				type: "POST",
 				url: '/users/login',
 				data: JSON.stringify(body),
-				contentType: 'application/json',
+				contentType: 'application/json'
 			}
 
 			var createUser = {
 				type: "POST",
 				url: '/users',
 				data: JSON.stringify(body),
-				contentType: 'application/json',
+				contentType: 'application/json'
 			}
 
 			// POST /users - Register a new user in the database
 
 			$.ajax(login)
-				.done(function (data, statusText, xhr) {
-					var status = xhr.status;
-					var localStorage.Auth = xhr.getResponseHeader('Auth');
-				})
 				.fail(function() {
 					$.ajax(createUser)
-						.done(function (data, statusText, xhr) {
-							alert("Congrats! You're now registered!");
+						.done(function(data, statusText, xhr) {
 							console.log(data);
+							alert("Congrats! You're now registered!");
+							$.ajax(login)
+							document.location.href = '/todo.html';
 						})
 				})
-			});
+				.done(function(data, statusText, xhr) {
+					var status = xhr.status;
+					var header = xhr.getResponseHeader('Auth');
+					console.log(header);
+					document.location.href = '/todo.html';
+				})
 
 
 		} else {
