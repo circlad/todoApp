@@ -32,16 +32,34 @@ $(document).ready(function() {
 
 		if (errorMessage == "") {
 
-			// POST /users - Register a new user in the database
+			var login = {
+				type: "POST",
+				url: '/users/login',
+				data: JSON.stringify(body),
+				contentType: 'application/json',
+			}
 
-			$.ajax({
+			var createUser = {
 				type: "POST",
 				url: '/users',
 				data: JSON.stringify(body),
 				contentType: 'application/json',
-				success: function(data) {
-					alert("Congrats! You're now registered!")					
-				}
+			}
+
+			// POST /users - Register a new user in the database
+
+			$.ajax(login)
+				.done(function (data, statusText, xhr) {
+					var status = xhr.status;
+					var localStorage.Auth = xhr.getResponseHeader('Auth');
+				})
+				.fail(function() {
+					$.ajax(createUser)
+						.done(function (data, statusText, xhr) {
+							alert("Congrats! You're now registered!");
+							console.log(data);
+						})
+				})
 			});
 
 
