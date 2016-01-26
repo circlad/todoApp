@@ -1,6 +1,13 @@
 $("#loginPage").css("min-height", $(window).height());
 
+
+
 $(document).ready(function() {
+
+	// If the token exists, automatically redirects to the todo.html page
+	if (localStorage.Auth !== '') {
+		document.location.href = '/todo.html';
+	}
 
 	$("#loginBox").submit(function(event) {
 
@@ -48,24 +55,29 @@ $(document).ready(function() {
 				contentType: 'application/json'
 			}
 
-			// Fires up the JQuery request
+			// Fires up the login request
 			$.ajax(login)
 				.fail(function() {
 					$.ajax(createUser)
-						.done(function (data, statusText, xhr) {
-							console.log(data);
+						.done(function(data, statusText, xhr) {
 							alert("Congrats! You're now registered!");
 							$.ajax(login)
-							document.location.href = '/todo.html';
+								.done(function(data, statusText, xhr) {
+									console.log('success');
+									var status = xhr.status;
+									localStorage.Auth = xhr.getResponseHeader('Auth');
+									document.location.href = '/todo.html';
+									return;
+								})
 						})
-						.fail(function (data, statusText, xhr) {
+						.fail(function(data, statusText, xhr) {
 							alert('Error: Unable to create a new account')
 						})
 				})
 				.done(function(data, statusText, xhr) {
 					var status = xhr.status;
-					var header = xhr.getResponseHeader('Auth');
-					console.log(header);
+					localStorage.Auth = xhr.getResponseHeader('Auth');
+					console.log(localStorage.Auth);
 					document.location.href = '/todo.html';
 				})
 

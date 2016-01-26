@@ -1,64 +1,60 @@
 // Resize content to browser-window
 $("#todoPage").css("min-height", $(window).height());
 
-// Go back on index
+// Go back to index (delete the authentication token)
 $("#logout").click(function() {
+  localStorage.Auth = "";
   document.location.href = "index.html"
 });
 
-// Add a task
+// Display the tasks of the user
+
 var taskList = [];
 
-var $description = $("#test").find('input[name=q]').val()
-
-var data = {
-  completed: false,
-  description: $description
-}
-
-// console.log(localStorage.Auth);
-
-var createTodo = {
-  type: "POST",
-  url: '/todos',
-  data: JSON.stringify(data),
-  contentType: 'application/json',
-  headers: {
-    Auth: localStorage.Auth
-  }
+function addTask() {
+  taskList.push($("#newTask").val());
+  var newTask = $("#newTask").val();
+  $("#todoList").append('<li><input type="checkbox"/>' + newTask + '<button class="deleteButton"><img src="images/delete.png"></button></li>');
+  $("#newTask").val(""); //  réinitialiser l'input
+  console.log(taskList)
 }
 
 $(addButton).click(function() {
 
-event.preventDefault();
+  event.preventDefault();
 
-  console.log($description);
+  var $description = $("#todoPage").find('input[name=q]').val()
+
+  var dataUser = {
+    description: $description
+  }
+
+  var createTodo = {
+    type: "POST",
+    url: '/todos',
+    data: JSON.stringify(dataUser),
+    contentType: 'application/json',
+    dataType: 'json',
+    headers: {
+      Auth: localStorage.Auth
+    }
+  }
 
   $.ajax(createTodo)
     .done(function(data, statusText, xhr) {
-      alert(data);
       var status = xhr.status;
       var header = xhr.getAllResponseHeaders();
-      localStorage.Auth = xhr.getResponseHeader('Auth');
-      console.log(status);
-      console.log(header);
+      console.log(statusText + '! The task was created: ' + xhr.responseText);
     })
     .fail(function(data, statusText, xhr) {
-      console.log("Erreur");
+      console.log('Erreur: ' + JSON.stringify(dataUser));
     });
+
+  // Add a task
+  addTask();
 })
 
 
-
-// function addTask() {
-
-//   taskList.push($("#description").val());
-//   var newTask = $("#description").val();
-//   $("#todoList").append('<li><input type="checkbox"/>' + newTask + '<button class="deleteButton"><img src="images/delete.png"></button></li>');
-//   $("#description").val(""); //  réinitialiser l'input
-//   console.log(taskList)
-// }
-// $(addButton).click(addTask)
 
 // Delete a task
 // function deleteTask() {
