@@ -1,10 +1,13 @@
 // Resize content to browser-window
 $("#todoPage").css("min-height", $(window).height());
 
-// Add a task
-// var taskList = [];
+// Go back on index
+$("#logout").click(function() {
+  document.location.href = "index.html"
+});
 
-event.preventDefault();
+// Add a task
+var taskList = [];
 
 var $description = $("#test").find('input[name=q]').val()
 
@@ -25,8 +28,12 @@ var createTodo = {
   }
 }
 
-$(addButton).click(function () {
+$(addButton).click(function() {
+
+event.preventDefault();
+
   console.log($description);
+
   $.ajax(createTodo)
     .done(function(data, statusText, xhr) {
       alert(data);
@@ -36,7 +43,7 @@ $(addButton).click(function () {
       console.log(status);
       console.log(header);
     })
-    .fail(function (data, statusText, xhr) {
+    .fail(function(data, statusText, xhr) {
       console.log("Erreur");
     });
 })

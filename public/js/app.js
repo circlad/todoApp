@@ -52,11 +52,14 @@ $(document).ready(function() {
 			$.ajax(login)
 				.fail(function() {
 					$.ajax(createUser)
-						.done(function(data, statusText, xhr) {
+						.done(function (data, statusText, xhr) {
 							console.log(data);
 							alert("Congrats! You're now registered!");
 							$.ajax(login)
 							document.location.href = '/todo.html';
+						})
+						.fail(function (data, statusText, xhr) {
+							alert('Error: Unable to create a new account')
 						})
 				})
 				.done(function(data, statusText, xhr) {

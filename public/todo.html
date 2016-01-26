@@ -11,38 +11,35 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-
     .marginTop {
       margin-top: 20px;
     }
-
     #loginBox {
       position: relative;
       position: center;
       margin:0 auto;
     }
-
     #todoList button {
       border:none;
       background: none;
       display: none;
     }
-
     #todoList:hover button {
       display: inline;
     }
-
     #todoList img {
-
       height:15px;
-
     }
-
     li {
       margin-top: 5px;
       list-style: none;
     }
-
+    #logout {
+      margin: 0;
+    }
+    .navbar-right {
+      padding-right: 0px;
+    }
     </style>
 
   </head>
@@ -66,6 +63,22 @@
 
           </button>
 
+
+
+        </div>
+
+        <div class="collapse navbar-collapse">
+
+          <form class="navbar-form navbar-right">
+
+            <div class="form-group">
+
+            <button type="button" value="Log out" id="logout" class="form-control" name="logout">Log out</button>
+
+            </div>
+
+          </form>
+
         </div>
 
       </div>
@@ -76,11 +89,11 @@
 
       <h1 class="text-center">Your to do list</h1>
 
-      <div class="input-group marginTop">
+      <div class="input-group marginTop" id="test">
 
         <span id="addButton" class="glyphicon glyphicon-plus input-group-addon"></span>
 
-        <input id="newTask" class="form-control" type="text" placeholder="List a task" style="margin-top: 1px"/>
+        <input id="newTask" name="q" class="form-control" type="text" placeholder="List a task" style="margin-top: 1px"/>
 
       </div>
 
@@ -99,59 +112,11 @@
     </div>
 
     
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-
-    <script>
-
-// Resize content to browser-window
-
-    $("#todoPage").css("min-height", $(window).height());
-
-
-// Add a task
-
-    var taskList = [];
-
-    function addTask() {
-
-      taskList.push($("#newTask").val());
-
-      var newTask = $("#newTask").val();
-
-      $("#todoList").append('<li><input type="checkbox"/>' + newTask + '<button class="deleteButton"><img src="images/delete.png"></button></li>');
-
-      $("#newTask").val(""); //  réinitialiser l'input
-
-      console.log(taskList)
-
-    }
-
-    $(addButton).click(addTask)
-
-
-// Delete a task
-
-    function deleteTask() {
-
-      $(this).parent().remove();
-
-      $(taskList).index(this);
-
-      if (index > -1) {
-          array.splice(index, 1);
-      }
-
-      console.log(index);
-
-    }
-
-    $(document).on('click','.deleteButton',deleteTask)
-
-    </script>
+    <script src="js/todo.js"></script>
 
   </body>
 </html>
