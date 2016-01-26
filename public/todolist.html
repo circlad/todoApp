@@ -43,6 +43,14 @@
       list-style: none;
     }
 
+    #logout {
+      margin: 0;
+    }
+
+    .navbar-right {
+      padding-right: 0px;
+    }
+
     </style>
 
   </head>
@@ -65,6 +73,22 @@
             <span class="icon-bar"></span>
 
           </button>
+
+
+
+        </div>
+
+        <div class="collapse navbar-collapse">
+
+          <form class="navbar-form navbar-right">
+
+            <div class="form-group">
+
+            <button type="button" value="Log out" id="logout" class="form-control" name="logout">Log out</button>
+
+            </div>
+
+          </form>
 
         </div>
 
@@ -111,6 +135,13 @@
 
     $("#todoPage").css("min-height", $(window).height());
 
+// Go back on index
+
+    $("#logout").click(function(){
+
+      document.location.href="index.html"     
+
+    });
 
 // Add a task
 
