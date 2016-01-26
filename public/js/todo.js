@@ -3,11 +3,51 @@ $("#todoPage").css("min-height", $(window).height());
 
 // Go back to index (delete the authentication token)
 $("#logout").click(function() {
+
+  var deleterUserLogin = {
+    type: 'GET',
+    url: '/users/login',
+    dataType: 'json',
+    headers: {
+      Auth: localStorage.Auth
+    }
+  }
+
+  $.ajax(deleterUserLogin)
+    .done(function () {
+      console.log('Token destroyed');
+    })
+
+  // inits localStorage
   localStorage.Auth = "";
+
   document.location.href = "index.html"
 });
 
+
+
+// Setup the request to retrieve the user's todolist
+var getTodolist = {
+  type: "GET",
+  url: '/todos',
+  dataType: 'json',
+  headers: {
+    Auth: localStorage.Auth
+  }
+}
+
+var userTaskList = [];
+
 // Display the tasks of the user
+$.ajax(getTodolist)
+  .done(function (data, statusText, xhr) {
+    userTaskList = JSON.parse(xhr.responseText);
+
+    for (var i = 0; i < userTaskList.length; i++) {
+      console.log(userTaskList[i].description);
+      $("#todoList").append('<li><input type="checkbox"/>' + userTaskList[i].description + '<button class="deleteButton"><img src="images/delete.png"></button></li>');
+    }
+  })
 
 var taskList = [];
 
@@ -19,6 +59,7 @@ function addTask() {
   console.log(taskList)
 }
 
+// when the user adds a task
 $(addButton).click(function() {
 
   event.preventDefault();
@@ -29,6 +70,7 @@ $(addButton).click(function() {
     description: $description
   }
 
+  // Setup the request to the server
   var createTodo = {
     type: "POST",
     url: '/todos',
@@ -40,6 +82,7 @@ $(addButton).click(function() {
     }
   }
 
+  // Send request to the server to create the task
   $.ajax(createTodo)
     .done(function(data, statusText, xhr) {
       var status = xhr.status;
@@ -52,6 +95,7 @@ $(addButton).click(function() {
 
   // Add a task
   addTask();
+
 })
 
 
