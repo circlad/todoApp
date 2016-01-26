@@ -74,7 +74,6 @@ app.get('/todos/:id', middleware.requireAuthentication, function(req, res) {
 app.post('/todos', middleware.requireAuthentication, function(req, res) {
 
 	// Use _pick to only pick description and completed
-
 	var body = _.pick(req.body, 'description', 'completed');
 
 	db.todo.create(body).then(function(todo) {
