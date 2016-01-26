@@ -32,6 +32,7 @@ $(document).ready(function() {
 
 		if (errorMessage == "") {
 
+			// Set up the login request
 			var login = {
 				type: "POST",
 				url: '/users/login',
@@ -39,6 +40,7 @@ $(document).ready(function() {
 				contentType: 'application/json'
 			}
 
+			// Setup the creation of a new user request
 			var createUser = {
 				type: "POST",
 				url: '/users',
@@ -46,8 +48,7 @@ $(document).ready(function() {
 				contentType: 'application/json'
 			}
 
-			// POST /users - Register a new user in the database
-
+			// Fires up the JQuery request
 			$.ajax(login)
 				.fail(function() {
 					$.ajax(createUser)
@@ -64,7 +65,6 @@ $(document).ready(function() {
 					console.log(header);
 					document.location.href = '/todo.html';
 				})
-
 
 		} else {
 

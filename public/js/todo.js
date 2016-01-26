@@ -4,11 +4,13 @@ $("#todoPage").css("min-height", $(window).height());
 // Add a task
 // var taskList = [];
 
+event.preventDefault();
+
 var $description = $("#test").find('input[name=q]').val()
 
 var data = {
   completed: false,
-  description: $description.toString()
+  description: $description
 }
 
 // console.log(localStorage.Auth);
@@ -24,7 +26,7 @@ var createTodo = {
 }
 
 $(addButton).click(function () {
-  console.log($("#test").find('input[name=q]').val());
+  console.log($description);
   $.ajax(createTodo)
     .done(function(data, statusText, xhr) {
       alert(data);
