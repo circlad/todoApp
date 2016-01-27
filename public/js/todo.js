@@ -55,7 +55,7 @@ $.ajax(getTodolist)
 
 function addTask(newTask) {
   taskList.push(newTask);
-  $("#todoList").append('<li><input type="checkbox" id=' + newTask.id + ' name="completed" checked=' + newTask.completed + ' />' +  newTask.description + '<button id=' + newTask.id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
+  $("#todoList").append('<li><input type="checkbox" id=' + newTask.id + ' name="completed"/>' +  newTask.description + '<button id=' + newTask.id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
   $("#newTask").val(""); //  réinitialiser l'input
 }
 
@@ -107,12 +107,9 @@ $(document).on('click', 'input[name=completed]', function() {
   if ($(this).prop('checked')) {
     console.log('checked')
     data.completed = true;
-    taskList[idToUpdate].completed = true;
   } else {
     console.log('unchecked');
   }
-
-
 
   var updateToDo = {
     type: "PUT",
@@ -128,7 +125,6 @@ $(document).on('click', 'input[name=completed]', function() {
   $.ajax(updateToDo)
     .done(function(data, statusText, xhr) {
       console.log('The task number ' + idToUpdate + ' was updated!')
-      console.log(xhr.responseText);
     })
 
 
