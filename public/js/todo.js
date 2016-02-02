@@ -44,7 +44,7 @@ $.ajax(getTodolist)
 
     for (var i = 0; i < taskList.length; i++) {
       if (taskList[i].completed === true) {
-        $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + taskList[i].id + ' name="completed" checked/><span class="item" id=' + taskList[i].id + '>' + taskList[i].description + '</span><input type="text" class="edit" style="display:none"><button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
+        $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + taskList[i].id + ' name="completed" checked/><span class="item" id=' + taskList[i].id + ' style="text-decoration:line-through">' + taskList[i].description + '</span><input type="text" class="edit" style="display:none"><button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
       } else {
         $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + taskList[i].id + ' name="completed"/><span class="item" id=' + taskList[i].id + '>' + taskList[i].description + '</span><input type="text" class="edit" style="display:none"><button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
       }
