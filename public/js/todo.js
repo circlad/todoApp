@@ -44,9 +44,9 @@ $.ajax(getTodolist)
 
     for (var i = 0; i < taskList.length; i++) {
       if (taskList[i].completed === true) {
-        $("#todoList").append('<li><input type="checkbox" id=' + taskList[i].id + ' name="completed" checked/>' + taskList[i].description + '<button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
+        $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + taskList[i].id + ' name="completed" checked/><span class="item" id=' + taskList[i].id + '>' + taskList[i].description + '</span><input type="text" class="edit" style="display:none"><button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
       } else {
-        $("#todoList").append('<li><input type="checkbox" id=' + taskList[i].id + ' name="completed"/>' + taskList[i].description + '<button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
+        $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + taskList[i].id + ' name="completed"/><span class="item" id=' + taskList[i].id + '>' + taskList[i].description + '</span><input type="text" class="edit" style="display:none"><button id=' + taskList[i].id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
       }
       
     }
@@ -55,7 +55,7 @@ $.ajax(getTodolist)
 
 function addTask(newTask) {
   taskList.push(newTask);
-  $("#todoList").append('<li><input type="checkbox" id=' + newTask.id + ' name="completed"/>' +  newTask.description + '<button id=' + newTask.id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
+  $("#todoList").append('<li class="task"><input type="checkbox" class="checkbox" id=' + newTask.id + ' name="completed"/><span class="item" id=' + newTask.id + '>' +  newTask.description + '</span><input type="text" class="edit" style="display:none"><button id=' + newTask.id + ' class="deleteButton"><img src="images/delete.png"></button></li>');
   $("#newTask").val(""); //  réinitialiser l'input
 }
 
@@ -95,6 +95,13 @@ $('#addButton').click(function() {
     });
 })
 
+// Press enter instead of click on AddButton
+$('#newTask').keypress(function(e){
+    if(e.which == 13){//Enter key pressed
+        $('#addButton').click();//Trigger search button click event
+    }
+});
+
 // When the user marks a task as completed
 $(document).on('click', 'input[name=completed]', function() {
 
@@ -105,10 +112,12 @@ $(document).on('click', 'input[name=completed]', function() {
   }
 
   if ($(this).prop('checked')) {
-    console.log('checked')
+    console.log('checked');
     data.completed = true;
+    $(this).siblings(".item").css('text-decoration', 'line-through');
   } else {
     console.log('unchecked');
+    $(this).siblings(".item").css('text-decoration', 'none')
   }
 
   var updateToDo = {
@@ -126,8 +135,6 @@ $(document).on('click', 'input[name=completed]', function() {
     .done(function(data, statusText, xhr) {
       console.log('The task number ' + idToUpdate + ' was updated!')
     })
-
-
 
 })
 
@@ -172,3 +179,53 @@ $(document).on('click', '.deleteButton', function() {
   $(this).parent().remove();
 
 })
+
+// When the user edits a task
+// Select the task to edit
+$(document).on('dblclick', '.item', function(){
+
+  event.preventDefault();
+
+  $(this).hide();
+  $(this).siblings(".edit").show().val($(this).text()).focus();
+
+});
+
+
+// Edit and save the task
+$(document).on('focusout', '.edit', function(){
+
+  event.preventDefault();
+
+  $(this).hide();  
+  $(this).siblings(".item").show().text($(this).val());
+
+  // Send the edit request to the server
+  var taskToEdit = $(this).val()
+  console.log($(this).val())
+
+  var data = {
+    description: taskToEdit
+  }
+
+  var idToEdit = $(this).siblings('span').attr('id');
+  console.log($(this).siblings('span').attr('id'))
+
+  var editTask = {
+    type: "PUT",
+    url: '/todos/' + idToEdit,
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    dataType: 'json',
+    headers: {
+      Auth: localStorage.Auth
+    }
+  }
+
+  $.ajax(editTask)
+    .done(function(data, statusText, xhr) {
+      taskList = JSON.parse(xhr.responseText);
+      console.log('The task number ' + idToEdit + ' was edited to:' + taskList.description)
+    })
+
+});
