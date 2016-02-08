@@ -1,13 +1,6 @@
 $("#loginPage").css("min-height", $(window).height());
 
-
-
 $(document).ready(function() {
-
-	// If the token exists, automatically redirects to the todo.html page
-	if (localStorage.Auth !== '') {
-		document.location.href = '/todo.html';
-	}
 
 	$("#loginBox").submit(function(event) {
 

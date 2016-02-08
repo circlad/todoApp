@@ -1,6 +1,6 @@
 // Creates a new sqlite database
 // Loads in the todo model
-// Exports the db object with has the todo mode, the sequelize instance and the sequelize library
+// Exports the db object with the todo mode, the sequelize instance and the sequelize library
 
 var Sequelize = require('sequelize');
 var env = process.env.NODE_ENV || 'development';
